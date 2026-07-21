@@ -1,0 +1,670 @@
+{
+  "run_ts": "2026-07-20T00:26:28",
+  "benchmarks": {
+    "cipa28_tdp": {
+      "run_ts": "2026-07-20T00:26:28",
+      "baseline": "herg_only_baseline",
+      "baseline_locked_auc": 0.9375,
+      "candidates": [
+        {
+          "name": "herg_only_baseline",
+          "iteration": 0,
+          "dev_auc": 0.8438,
+          "dev_ci": [
+            0.4444,
+            1.0
+          ],
+          "locked_auc": 0.9375,
+          "locked_ci": [
+            0.7842,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.032,
+            "null_mean": 0.5053,
+            "null_p95": 0.8125,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "multichannel_sum",
+          "iteration": 1,
+          "dev_auc": 0.7812,
+          "dev_ci": [
+            0.3,
+            1.0
+          ],
+          "locked_auc": 0.875,
+          "locked_ci": [
+            0.6667,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.0849,
+            "null_mean": 0.5108,
+            "null_p95": 0.8125,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": false
+          },
+          "passed": false
+        },
+        {
+          "name": "multichannel_logreg",
+          "iteration": 2,
+          "dev_auc": 0.5625,
+          "dev_ci": [
+            0.1143,
+            1.0
+          ],
+          "locked_auc": 0.9375,
+          "locked_ci": [
+            0.7842,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.2348,
+            "null_mean": 0.3741,
+            "null_p95": 0.7812,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": false
+          },
+          "passed": false
+        },
+        {
+          "name": "kernik_only",
+          "iteration": 3,
+          "dev_auc": 0.9062,
+          "dev_ci": [
+            0.6296,
+            1.0
+          ],
+          "locked_auc": 0.9062,
+          "locked_ci": [
+            0.7181,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.014,
+            "null_mean": 0.4996,
+            "null_p95": 0.7812,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": false
+          },
+          "passed": false
+        },
+        {
+          "name": "multichannel_plus_kernik",
+          "iteration": 4,
+          "dev_auc": 0.75,
+          "dev_ci": [
+            0.25,
+            1.0
+          ],
+          "locked_auc": 0.9375,
+          "locked_ci": [
+            0.7842,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.0909,
+            "null_mean": 0.3832,
+            "null_p95": 0.7812,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": false
+          },
+          "passed": false
+        }
+      ],
+      "canary": {
+        "dev_auc": 0.125,
+        "locked_auc": 0.6875,
+        "permutation": {
+          "pval": 0.988,
+          "null_mean": 0.4969,
+          "null_p95": 0.8125,
+          "n": 1000
+        },
+        "passed": false
+      }
+    },
+    "enginev0_cardiotox": {
+      "run_ts": "2026-07-20T00:26:28",
+      "baseline": "magnitude_only",
+      "baseline_locked_auc": 0.7,
+      "candidates": [
+        {
+          "name": "magnitude_only",
+          "iteration": 0,
+          "dev_auc": 0.876,
+          "dev_ci": [
+            0.7024,
+            1.0
+          ],
+          "locked_auc": 0.7,
+          "locked_ci": [
+            0.3,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.001,
+            "null_mean": 0.3676,
+            "null_p95": 0.6529,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "panel_only",
+          "iteration": 1,
+          "dev_auc": 0.6942,
+          "dev_ci": [
+            0.4464,
+            0.9083
+          ],
+          "locked_auc": 0.5333,
+          "locked_ci": [
+            0.0833,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.004,
+            "null_mean": 0.3545,
+            "null_p95": 0.562,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": false
+          },
+          "passed": false
+        },
+        {
+          "name": "panel_no_magnitude",
+          "iteration": 2,
+          "dev_auc": 0.9008,
+          "dev_ci": [
+            0.7521,
+            1.0
+          ],
+          "locked_auc": 0.6667,
+          "locked_ci": [
+            0.2,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.001,
+            "null_mean": 0.3825,
+            "null_p95": 0.6198,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": false
+          },
+          "passed": false
+        },
+        {
+          "name": "all_features",
+          "iteration": 3,
+          "dev_auc": 0.9752,
+          "dev_ci": [
+            0.9008,
+            1.0
+          ],
+          "locked_auc": 0.8,
+          "locked_ci": [
+            0.4286,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.001,
+            "null_mean": 0.3991,
+            "null_p95": 0.6694,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        }
+      ],
+      "canary": {
+        "dev_auc": 0.4835,
+        "locked_auc": 0.3333,
+        "permutation": {
+          "pval": 0.5325,
+          "null_mean": 0.4967,
+          "null_p95": 0.7025,
+          "n": 1000
+        },
+        "passed": false
+      }
+    },
+    "variant_tdp": {
+      "run_ts": "2026-07-20T00:26:28",
+      "baseline": "healthy_only",
+      "baseline_locked_auc": 0.9271,
+      "candidates": [
+        {
+          "name": "healthy_only",
+          "iteration": 0,
+          "dev_auc": 0.9062,
+          "dev_ci": [
+            0.6296,
+            1.0
+          ],
+          "locked_auc": 0.9271,
+          "locked_ci": [
+            0.7482,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.015,
+            "null_mean": 0.5007,
+            "null_p95": 0.8125,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "variant_conditioned",
+          "iteration": 1,
+          "dev_auc": 0.8125,
+          "dev_ci": [
+            0.3438,
+            1.0
+          ],
+          "locked_auc": 0.9375,
+          "locked_ci": [
+            0.7842,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.026,
+            "null_mean": 0.3608,
+            "null_p95": 0.7188,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "variant_deltas",
+          "iteration": 2,
+          "dev_auc": 0.4062,
+          "dev_ci": [
+            0.0,
+            0.9
+          ],
+          "locked_auc": 0.5625,
+          "locked_ci": [
+            0.2,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.4216,
+            "null_mean": 0.3571,
+            "null_p95": 0.7812,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": false
+          },
+          "passed": false
+        },
+        {
+          "name": "lqt2_amplification",
+          "iteration": 3,
+          "dev_auc": 0.6562,
+          "dev_ci": [
+            0.1875,
+            1.0
+          ],
+          "locked_auc": 0.6146,
+          "locked_ci": [
+            0.1333,
+            1.0
+          ],
+          "permutation": {
+            "pval": 0.1019,
+            "null_mean": 0.3041,
+            "null_p95": 0.6875,
+            "n": 1000
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": false
+          },
+          "passed": false
+        }
+      ],
+      "canary": {
+        "dev_auc": 0.125,
+        "locked_auc": 0.6875,
+        "permutation": {
+          "pval": 0.988,
+          "null_mean": 0.4969,
+          "null_p95": 0.8125,
+          "n": 1000
+        },
+        "passed": false
+      }
+    },
+    "dictrank_fp": {
+      "run_ts": "2026-07-20T00:26:28",
+      "baseline": "fp_bitcount_baseline",
+      "baseline_locked_auc": 0.5412,
+      "candidates": [
+        {
+          "name": "fp_bitcount_baseline",
+          "iteration": 0,
+          "dev_auc": 0.4848,
+          "dev_ci": [
+            0.4383,
+            0.5317
+          ],
+          "locked_auc": 0.5412,
+          "locked_ci": [
+            0.4593,
+            0.6258
+          ],
+          "permutation": {
+            "pval": 0.7463,
+            "null_mean": 0.5008,
+            "null_p95": 0.5416,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": true
+          },
+          "passed": false
+        },
+        {
+          "name": "fp_logreg_l2_3.0",
+          "iteration": 1,
+          "dev_auc": 0.7138,
+          "dev_ci": [
+            0.6714,
+            0.7518
+          ],
+          "locked_auc": 0.6669,
+          "locked_ci": [
+            0.5867,
+            0.7437
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.497,
+            "null_p95": 0.5517,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "fp_logreg_l2_1.0",
+          "iteration": 2,
+          "dev_auc": 0.7147,
+          "dev_ci": [
+            0.6722,
+            0.753
+          ],
+          "locked_auc": 0.6628,
+          "locked_ci": [
+            0.5828,
+            0.7387
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4972,
+            "null_p95": 0.5506,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "fp_logreg_l2_0.3",
+          "iteration": 3,
+          "dev_auc": 0.7148,
+          "dev_ci": [
+            0.6723,
+            0.7529
+          ],
+          "locked_auc": 0.6618,
+          "locked_ci": [
+            0.5829,
+            0.7386
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4973,
+            "null_p95": 0.5502,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "fp_logreg_l2_0.1",
+          "iteration": 4,
+          "dev_auc": 0.7147,
+          "dev_ci": [
+            0.6721,
+            0.753
+          ],
+          "locked_auc": 0.6613,
+          "locked_ci": [
+            0.5817,
+            0.7384
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4973,
+            "null_p95": 0.55,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        }
+      ],
+      "canary": {
+        "dev_auc": 0.4659,
+        "locked_auc": 0.5069,
+        "permutation": {
+          "pval": 0.9055,
+          "null_mean": 0.4961,
+          "null_p95": 0.5332,
+          "n": 200
+        },
+        "passed": false
+      }
+    },
+    "dictrank_fp_random": {
+      "run_ts": "2026-07-20T00:26:28",
+      "baseline": "fp_bitcount_baseline",
+      "baseline_locked_auc": 0.5044,
+      "candidates": [
+        {
+          "name": "fp_bitcount_baseline",
+          "iteration": 0,
+          "dev_auc": 0.4925,
+          "dev_ci": [
+            0.45,
+            0.5426
+          ],
+          "locked_auc": 0.5044,
+          "locked_ci": [
+            0.4152,
+            0.5916
+          ],
+          "permutation": {
+            "pval": 0.6119,
+            "null_mean": 0.4994,
+            "null_p95": 0.5389,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": false,
+            "beats_baseline": true
+          },
+          "passed": false
+        },
+        {
+          "name": "fp_logreg_l2_3.0",
+          "iteration": 1,
+          "dev_auc": 0.6883,
+          "dev_ci": [
+            0.6452,
+            0.7289
+          ],
+          "locked_auc": 0.7448,
+          "locked_ci": [
+            0.6733,
+            0.8158
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4941,
+            "null_p95": 0.5474,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "fp_logreg_l2_1.0",
+          "iteration": 2,
+          "dev_auc": 0.6866,
+          "dev_ci": [
+            0.6435,
+            0.7273
+          ],
+          "locked_auc": 0.7445,
+          "locked_ci": [
+            0.6716,
+            0.8163
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4944,
+            "null_p95": 0.5458,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "fp_logreg_l2_0.3",
+          "iteration": 3,
+          "dev_auc": 0.6861,
+          "dev_ci": [
+            0.6425,
+            0.7272
+          ],
+          "locked_auc": 0.7431,
+          "locked_ci": [
+            0.67,
+            0.815
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4945,
+            "null_p95": 0.5451,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        },
+        {
+          "name": "fp_logreg_l2_0.1",
+          "iteration": 4,
+          "dev_auc": 0.6859,
+          "dev_ci": [
+            0.6422,
+            0.7267
+          ],
+          "locked_auc": 0.7427,
+          "locked_ci": [
+            0.6699,
+            0.8148
+          ],
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4945,
+            "null_p95": 0.545,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": true
+          },
+          "passed": true
+        }
+      ],
+      "canary": {
+        "dev_auc": 0.522,
+        "locked_auc": 0.5019,
+        "permutation": {
+          "pval": 0.204,
+          "null_mean": 0.5003,
+          "null_p95": 0.5412,
+          "n": 200
+        },
+        "passed": false
+      }
+    }
+  }
+}

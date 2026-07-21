@@ -1,0 +1,29 @@
+drug,mechanism_group,rationale
+bepridil,multichannel,hERG + ICaL + INa block (canonical multichannel blocker)
+dofetilide,herg_pure,selective IKr/hERG blocker (class III)
+quinidine,multichannel,hERG + INa + multiple currents
+sotalol,herg_pure,IKr-mediated; weak hERG needing high dose
+chlorpromazine,multichannel,hERG + ICaL + INa
+cisapride,herg_pure,potent selective hERG blocker
+ondansetron,herg_pure,hERG-dominant
+terfenadine,multichannel,hERG + ICaL + INa
+diltiazem,ca_blocker,non-dihydropyridine ICaL blocker
+mexiletine,na_blocker,peak/late INa blocker
+ranolazine,na_blocker,late-sodium (INaL) blocker
+verapamil,ca_blocker,ICaL blocker with balanced hERG
+azimilide,herg_pure,class III IKr blocker
+disopyramide,multichannel,class Ia; INa + hERG
+ibutilide,herg_pure,class III IKr
+vandetanib,multichannel,TKI with hERG + off-target block
+astemizole,herg_pure,potent hERG blocker
+clarithromycin,herg_pure,hERG-dominant
+clozapine,multichannel,hERG + ICaL + INa
+domperidone,herg_pure,potent hERG blocker
+droperidol,herg_pure,hERG-dominant
+pimozide,multichannel,hERG + ICaL
+risperidone,herg_pure,hERG-dominant
+loratadine,multichannel,hERG + ICaL + INa
+metoprolol,other,beta-blocker; weak direct channel block
+nifedipine,ca_blocker,dihydropyridine ICaL blocker
+nitrendipine,ca_blocker,dihydropyridine ICaL blocker
+tamoxifen,multichannel,hERG + ICaL + INa

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Assemble the self-contained data blob the dashboard embeds: the loop summary plus, for each
-benchmark, the permutation-null distribution of its headline model (so the dashboard can draw
+benchmark, the permutation-null distribution of its headline model (the dev-selected champion) (so the dashboard can draw
 the observed-vs-null histogram without any external calls).
 
 Run after run_loop.py. Writes dashboard_data.json.
@@ -25,8 +25,11 @@ def main():
     summ = json.load(open(os.path.join(HERE, "loop_summary.json")))
     nulls = {}
     for bid, b in summ["benchmarks"].items():
-        passed = [c for c in b["candidates"] if c["passed"]]
-        head = max(passed or b["candidates"], key=lambda c: c["locked_auc"])
+        if bid not in BENCH_CLASS:      # e.g. dictrank_fp_random: in the summary, not on the dashboard
+            continue
+        # headline = the champion selected on dev, else the baseline. Never pick by locked AUC.
+        head_name = b.get("champion") or b["baseline"]
+        head = next(c for c in b["candidates"] if c["name"] == head_name)
         bench = BENCH_CLASS[bid]()
         registry, _ = M.REGISTRIES[bid]
         Xd, yd, gd, _ = bench.dev()
@@ -36,7 +39,8 @@ def main():
                           pval=round(perm["pval"], 4),
                           null=[round(x, 4) for x in perm["null_dist"]])
         print(f"{bid}: headline={head['name']} observed={perm['observed']:.3f} p={perm['pval']:.3f}")
-    out = dict(run_ts=summ["run_ts"], benchmarks=summ["benchmarks"], nulls=nulls)
+    shown = {k: v for k, v in summ["benchmarks"].items() if k in BENCH_CLASS}
+    out = dict(run_ts=summ["run_ts"], benchmarks=shown, nulls=nulls)
     json.dump(out, open(os.path.join(HERE, "dashboard_data.json"), "w"))
     print("wrote dashboard_data.json")
 

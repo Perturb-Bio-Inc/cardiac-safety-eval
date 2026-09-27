@@ -13,7 +13,7 @@ canonical per-fold numbers; it imports that script's loaders/selection and adds:
      held-out coverage?).
 
 numpy + scipy only. Deterministic given SEED (same seed as the canonical run).
-Run:  ~/.venvs/myokit/bin/python lodo_pooled_stat.py
+Run:  python lodo_pooled_stat.py
 """
 import numpy as np
 from scipy.stats import norm, chi2

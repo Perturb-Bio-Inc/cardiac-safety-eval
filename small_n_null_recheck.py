@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sensitivity re-check for the two externally cited small-benchmark results (T-511).
+Sensitivity re-check for the two externally cited small-benchmark results.
 
 The permutation p-value is already computed against the pipeline's own null, so it is exact
 under label exchangeability whatever the null mean is. This script asks the separate question
@@ -8,7 +8,7 @@ a reader will ask: if the null were forced to centre at 0.50 (i.e. if the downwa
 removed), would the same candidates still clear the gate? It re-computes p and the p95 gate
 against the null distribution shifted up by (0.50 - null_mean).
 
-Run: ~/.venvs/myokit/bin/python small_n_null_recheck.py
+Run: python small_n_null_recheck.py
 """
 import json
 import os

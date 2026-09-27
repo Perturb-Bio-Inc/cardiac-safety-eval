@@ -35,7 +35,7 @@ full transcriptome from the OTHER THREE datasets and tests the held-out dataset'
 direction on that held-out-blind panel.
 
 numpy + scipy + csv only. Deterministic given SEED.
-Run:  ~/.venvs/myokit/bin/python panel_replication_clean_run.py
+Run:  ENGINE_V0_DIR=<data checkout> python panel_replication_clean_run.py
 """
 import csv
 import glob
@@ -48,7 +48,7 @@ from scipy.stats import norm
 
 SEED = 0
 N_PERM = 10000
-BONF = 5e-7          # same fixed Bonferroni cutoff the original T-048 selection used
+BONF = 5e-7          # same fixed Bonferroni cutoff the original panel selection used
 EV0 = os.environ.get("ENGINE_V0_DIR", "../engine-v0")  # set ENGINE_V0_DIR to your data checkout
 PANEL_CSV = f"{EV0}/data/richer_panel_genes.csv"
 
@@ -79,7 +79,7 @@ DTOXS_FILE_RE = re.compile(
 
 
 # ----------------------------------------------------------------------------------
-# Full-background loaders (pure numpy/csv; replicate T048_stouffer_richer_panel.py)
+# Full-background loaders (pure numpy/csv; replicate the original Stouffer panel selection)
 # ----------------------------------------------------------------------------------
 def load_burridge():
     with open(BURRIDGE_CSV) as f:

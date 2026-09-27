@@ -5,12 +5,14 @@ How much does the scaffold split cost us on DICTrank?
 The leaderboard carries one seed-0 run per split scheme (dictrank_fp, dictrank_fp_random),
 certified through the normal path. A single locked set of 249 drugs has a wide CI, so a
 one-draw difference between the two cannot settle the question on its own. This re-runs the
-locked evaluation of the winning candidate across several seeds under both schemes and
-reports the paired per-seed difference, which is the number the comparator doc needs.
+locked evaluation of one candidate across several seeds under both schemes and reports the
+paired per-seed difference. The candidate is the champion that run_loop.py selected on dev
+for the scaffold split, read from loop_summary.json, so this script never picks a model by
+its locked score.
 
 No permutation null here (the seed-0 leaderboard entries carry that); no leaderboard writes.
 
-Usage: ~/.venvs/myokit/bin/python dictrank_split_scheme_run.py
+Usage: python dictrank_split_scheme_run.py   (run run_loop.py dictrank first)
 """
 import os
 import sys
@@ -23,7 +25,11 @@ import eval_core as E     # noqa: E402
 import benchmarks as B    # noqa: E402
 import models as M        # noqa: E402
 
-CANDIDATE = "fp_logreg_l2_3.0"
+_SUMMARY = os.path.join(HERE, "loop_summary.json")
+try:
+    CANDIDATE = json.load(open(_SUMMARY))["benchmarks"]["dictrank_fp"]["champion"]
+except (OSError, KeyError):
+    sys.exit("loop_summary.json has no dictrank_fp champion; run `python run_loop.py dictrank` first")
 BASELINE = "fp_bitcount_baseline"
 SEEDS = [0, 1, 2, 3, 4, 5, 6, 7]
 
@@ -69,7 +75,7 @@ def main():
         "n_seeds_random_higher": n_pos, "n_seeds": len(SEEDS),
     }
     print("\n" + json.dumps(summary, indent=2))
-    out = os.path.join(HERE, "dictrank_split_scheme_2026-07-20.json")
+    out = os.path.join(HERE, "dictrank_split_scheme.json")
     json.dump({"summary": summary, "per_seed": rows}, open(out, "w"), indent=2)
     print(f"wrote {os.path.basename(out)}")
 

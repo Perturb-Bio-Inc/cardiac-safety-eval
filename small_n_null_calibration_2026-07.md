@@ -2,17 +2,17 @@
 
 2026-07-20. Scripts: `small_n_null_probe.py` (synthetic probe), `small_n_null_recheck.py`
 (sensitivity re-check). Data: `small_n_null_probe.json`, `small_n_null_recheck.json`.
-Interpreter `~/.venvs/myokit/bin/python`. `eval_core.py` was not modified; both scripts call its
+`eval_core.py` was not modified; both scripts call its
 `permutation_null` / `grouped_oof_scores` unchanged.
 
 ## The claim under test
 
 The README caveat said the small-benchmark permutation null "centers slightly below 0.50 (an
 overfitting-under-shuffle effect, not leakage)"
-`[Checked: read science/cardiac_safety_loop/README.md 2026-07-20 → Caveats, first bullet, pre-edit text]`.
+(Source: read the July 2026 version of README.md → Caveats, first bullet, pre-edit text).
 The shift is large, not slight: `multichannel_logreg` on CiPA has null_mean 0.3741 and every
 fitted engine-v0 candidate sits between 0.355 and 0.399
-`[Checked: read loop_summary.json 2026-07-20 → per-candidate permutation.null_mean]`.
+(Source: read loop_summary.json 2026-07-20 → per-candidate permutation.null_mean).
 The parenthetical was never measured.
 
 **Result: the "overfitting" half of the explanation is wrong.** The shift is not driven by model
@@ -28,7 +28,7 @@ from 0.50 is a property of the estimator. Labels and fold structure taken from t
 benchmarks. Note: the permutation null runs on the **dev** split, so the real structures are
 n=12 in 4 mechanism groups (CiPA-28, 4/4/4 ordinal) and n=22 in 5 groups (engine-v0, 11/11), not
 the n=28 / n=33 full-benchmark sizes named in the task
-`[Checked: ran benchmarks.CiPABenchmark().dev() / EngineV0Benchmark().dev() 2026-07-20 → (12,4) and (22,4)]`.
+(Source: ran benchmarks.CiPABenchmark().dev() / EngineV0Benchmark().dev() 2026-07-20 → (12,4) and (22,4)).
 2,000 shuffles per cell; standard errors below are on the null mean.
 
 ### A. Flexibility, at the real fold structures
@@ -49,7 +49,7 @@ the stated explanation predicts and is the part it gets right. But the shift is 
 simplest fitted model and shrinks monotonically as parameters are added**, the exact opposite of
 an overfitting effect. The harness's own large benchmark makes the same point from the other end:
 `fp_logreg` on DICTrank fits 1,025 parameters on ~700 dev molecules and its null mean is 0.4970
-`[Checked: read loop_summary.json 2026-07-20 → dictrank_fp/fp_logreg_l2_3.0 permutation.null_mean 0.497]`.
+(Source: read loop_summary.json 2026-07-20 → dictrank_fp/fp_logreg_l2_3.0 permutation.null_mean 0.497).
 A thousand parameters cost 0.003; two parameters at n=12 cost 0.17.
 
 ### B. Size of the shift vs n (k=4 folds, 1/3 prevalence, 4-param logreg)
@@ -109,7 +109,7 @@ the null centres at. The shift is already absorbed by construction. Do not "corr
 Because the null shifts down, its 95th percentile shifts down with it, so a candidate can clear
 the as-run gate while failing a 0.50-centred one. Arithmetic, from re-running each null at 2,000
 shuffles and re-scoring against the distribution shifted up by (0.50 − null_mean)
-`[Checked: ran small_n_null_recheck.py 2026-07-20 → small_n_null_recheck.json]`:
+(Source: ran small_n_null_recheck.py 2026-07-20 → small_n_null_recheck.json):
 
 | benchmark | candidate | dev AUC | null mean | p / p95 as run | p / p95 re-centred | gate flips? |
 |---|---|---|---|---|---|---|
@@ -126,7 +126,7 @@ One candidate out of eight is reference-dependent: `panel_only` (dev 0.694, the 
 panel score with magnitude left in) clears the as-run gate at p=0.0025 and would not clear a
 0.50-centred one at p=0.067. It is not a headline result: its locked AUC is 0.533, below the
 0.70 magnitude baseline, so it fails certification on the baseline gate regardless
-`[Checked: read loop_summary.json 2026-07-20 → enginev0/panel_only locked_auc 0.533]`. Worth
+(Source: read loop_summary.json 2026-07-20 → enginev0/panel_only locked_auc 0.533). Worth
 knowing that the dev-side evidence for a magnitude-free panel signal is thinner than p=0.0025
 suggests to a reader who assumes chance is 0.5.
 

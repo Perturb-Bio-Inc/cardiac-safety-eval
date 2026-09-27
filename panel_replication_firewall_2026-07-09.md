@@ -1,10 +1,10 @@
 # Panel cross-dataset replication: permutation-null firewall
 
-> **SCOPE NOTE added 2026-07-17 (T-360). No number in this doc changes; two clarifications that protect them.**
+> **SCOPE NOTE added 2026-07-17. No number in this doc changes; two clarifications that protect them.**
 >
 > **1. "Membership" here means panel-selector membership, not pretraining-corpus membership.** Firewall D removes the leak where a gene was in the tested panel because the held-out dataset helped select it. A separate audit asked whether the planned engine pretraining corpus overlaps these folds. **It does (Sharma and DToxS are both slated corpus members), and it does not touch any number here**, because every result in this doc is a sign-permutation statistic over public DEG matrices with no fitted model. The engine never enters this computation. **The contamination is prospective and lands on the engine's Task-1/Task-2 benchmarks, not retrospectively on these folds.** Rule written into a separate internal note §7d.
 >
-> **2. The Sharma fold is GSE114686 RNA-seq, not microarray.** This doc calls it "multi-compound, multi-platform microarray" (Firewall B section) and the standing caveats call it multi-compound. `[Checked: read panel_replication_clean_run.py 2026-07-17 → line 57 loads `data/sharma2017/GSE114686_ProcessedData.csv`; the directory name `sharma2017` is a legacy misnomer, and the file is TMM-normalized STAR feature counts per a separate internal note]` **The "microarray" descriptor is unsupported; do not repeat it.** The 0.945 (Firewall B) and 0.791 (Firewall D) Sharma numbers were computed on GSE114686 and are unaffected. The "most independent hold-out" reasoning stands on multi-compound TKI content and a separate lab, not on platform diversity.
+> **2. The Sharma fold is GSE114686 RNA-seq, not microarray.** This doc calls it "multi-compound, multi-platform microarray" (Firewall B section) and the standing caveats call it multi-compound. (Source: read panel_replication_clean_run.py 2026-07-17 → line 57 loads `data/sharma2017/GSE114686_ProcessedData.csv`; the directory name `sharma2017` is a legacy misnomer, and the file is TMM-normalized STAR feature counts per a separate internal note) **The "microarray" descriptor is unsupported; do not repeat it.** The 0.945 (Firewall B) and 0.791 (Firewall D) Sharma numbers were computed on GSE114686 and are unaffected. The "most independent hold-out" reasoning stands on multi-compound TKI content and a separate lab, not on platform diversity.
 >
 > **One adjacent gap, logged not chased:** all four Sharma TKIs are present in DToxS's 54-drug list, so the Task-1 DToxS→Sharma template carries same-compound leakage that the Matthews run measured (delta -0.02 to -0.07) and the Sharma run never did. Small; belongs to a separate internal note.
 
@@ -22,7 +22,7 @@ The `>=3/4 same-sign` rule guarantees every panel gene agrees with its assigned 
 
 Among the 55 panel genes measured in all 4 datasets, statistic = mean over the 6 dataset-pairs of the fraction of genes whose z-signs agree. Null shuffles each dataset's sign vector across genes independently, preserving each dataset's up/down marginal.
 
-`[Checked: ran panel_replication_run.py 2026-07-09 -> observed mean pairwise concordance = 0.9273; null mean 0.7379, null p95 0.7636, null max (10,000 shuffles) 0.8061; empirical p = 1.0e-4]`
+(Source: ran panel_replication_run.py 2026-07-09 -> observed mean pairwise concordance = 0.9273; null mean 0.7379, null p95 0.7636, null max (10,000 shuffles) 0.8061; empirical p = 1.0e-4)
 
 The observed value sits above the entire null distribution (max 0.806), so p is floored at 1/(N+1)=1.0e-4 and is in fact smaller. Caveat: this test is partly floored by the `>=3/4` selection rule, which is why B is the primary result.
 
@@ -30,7 +30,7 @@ The observed value sits above the entire null distribution (max 0.806), so p is 
 
 For each held-out dataset, the consensus direction is built from the **other three** (sign of the summed z), then we test whether the held-out dataset agrees. The direction being tested is independent of the held-out data, so this mostly escapes the selection floor. Null shuffles the held-out signs.
 
-`[Checked: ran panel_replication_run.py 2026-07-09 -> held-out agreement, n=55 each]`
+(Source: ran panel_replication_run.py 2026-07-09 -> held-out agreement, n=55 each)
 
 | Held out | Observed agreement | Null mean | Null p95 | Empirical p |
 |---|---|---|---|---|
@@ -45,11 +45,11 @@ Every held-out dataset points the same way as the consensus of the other three f
 
 The load-bearing number for the disease-variant claim is the GSE198258 enrichment (isogenic MYH7 R723C / MYH6 R725C iPSC-CM vs base-edited control). Recomputed independently from the primary DEG table, no reuse of the prior script's output.
 
-`[Checked: ran panel_replication_run.py 2026-07-09 -> 28,043 genes; 79 of 81 panel genes measured, 28 significant (padj<0.05) = 35.4% vs 5.0% background; odds ratio 10.38, 7.05x background, one-sided Fisher p = 8.03e-17]`
+(Source: ran panel_replication_run.py 2026-07-09 -> 28,043 genes; 79 of 81 panel genes measured, 28 significant (padj<0.05) = 35.4% vs 5.0% background; odds ratio 10.38, 7.05x background, one-sided Fisher p = 8.03e-17)
 
 This confirms the previously reported "odds 10.4, 7.0x, p=8e-17" exactly. Distribution-free check: draw random 79-gene sets from the measured background and count significant genes.
 
-`[Checked: ran panel_replication_run.py 2026-07-09 -> random 79-gene sets: mean 4.0 significant, max 13 over 10,000 draws; observed 28; empirical p = 1.0e-4]`
+(Source: ran panel_replication_run.py 2026-07-09 -> random 79-gene sets: mean 4.0 significant, max 13 over 10,000 draws; observed 28; empirical p = 1.0e-4)
 
 No random set of the same size reaches even half the observed count, so the Fisher p is not an artifact of the parametric approximation.
 
@@ -59,11 +59,11 @@ Firewall B removed the *direction* leak but not the *membership* leak: a panel g
 
 **Data: all four full backgrounds now available (2026-07-09).** The DToxS full DEG TSVs were re-downloaded (LINCS DToxS SVD, `iyengarlab.org/dtoxs/files/LINCS_DToxS_SVD.zip`, the `Degs_initial_iPSCdCMs_P0` directory, 266 per-drug/cell-line TSVs, ~16.4k genes each, the full transcriptome rather than the top-600 on disk). The DToxS full-background z now reconstructs from the same T048 pipeline and matches `richer_panel_genes.csv` exactly, alongside the three that already did:
 
-`[Checked: ran panel_replication_clean_run.py 2026-07-09 -> reconstructed full-background z reproduces richer_panel_genes.csv z-scores to machine precision: DToxS max|diff| 1.78e-15 over 717 panel genes, Sharma 2.66e-15 / 584, Burridge 6.66e-16 / 705, Wu-Liu 0.0 / 725]`
+(Source: ran panel_replication_clean_run.py 2026-07-09 -> reconstructed full-background z reproduces richer_panel_genes.csv z-scores to machine precision: DToxS max|diff| 1.78e-15 over 717 panel genes, Sharma 2.66e-15 / 584, Burridge 6.66e-16 / 705, Wu-Liu 0.0 / 725)
 
 Because every dataset now has a full background, every leave-one-out fold re-selects its panel over the full transcriptome from the other three and tests the held-out direction using the **same full-background z sign** the panel selection and Firewalls A/B use. Held-out direction = sign of the held-out dataset's full-background z (mean logFC across its cardiotox+ conditions, z-scored across all its genes).
 
-`[Checked: ran panel_replication_clean_run.py 2026-07-09 -> fully-clean LODO, 10,000 permutations, seed 0]`
+(Source: ran panel_replication_clean_run.py 2026-07-09 -> fully-clean LODO, 10,000 permutations, seed 0)
 
 | Held out | Selectors | Panel size | Covered | Observed | Null mean | Null max | Empirical p |
 |---|---|---|---|---|---|---|---|
@@ -78,7 +78,7 @@ Every held-out dataset agrees with the other-three consensus above its own shuff
 
 **Correction to the prior DToxS-fold number.** The earlier run (before the DToxS full DEG re-download) tested the DToxS held-out direction using the on-disk **top-600** DEG file and reported 0.990 (95/96), p=1.0e-4. That number was a top-600 artifact, not the consistent measure. On the identical 98-gene panel, the top-600 direction reproduces 0.990 but the full-background direction gives 0.704: 27 of 96 covered genes flip sign between the two measures. The flippers are the anthracycline DNA-damage / p53 program (GADD45A, CDKN1A, FDXR, ICAM1, PARP14, HERC5, MAP1LC3B and similar), which dominate the top-600 lists of the dox-heavy selectors but average out toward zero (or flip) when weighted equally across all 16 DToxS cardiotox drugs, most of which are TKIs and antibodies that do not trigger that program. The full-background z sign is the measure the panel was selected on and that every other firewall uses, so 0.704 is the number that belongs in the LODO; 0.990 was measuring agreement among only the strongly-DE genes and is not leakage-clean-comparable.
 
-`[Checked: ran cross-check 2026-07-09 -> same 98-gene DToxS-blind panel; top-600 direction 95/96=0.990; full-background direction 69/98=0.704; 27/96 genes covered by both differ in sign]`
+(Source: ran cross-check 2026-07-09 -> same 98-gene DToxS-blind panel; top-600 direction 95/96=0.990; full-background direction 69/98=0.704; 27/96 genes covered by both differ in sign)
 
 ## What is verified
 

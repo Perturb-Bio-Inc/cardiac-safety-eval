@@ -5,7 +5,7 @@ running-best over the loop's iterations) and the permutation-null figure (the an
 money shot: the certified model's real AUC sits far right of the shuffled-label null).
 
 Reads leaderboard.jsonl (append-only, grows every run) + loop_summary.json.
-Run: ~/.venvs/myokit/bin/python visualize.py
+Run: python visualize.py
 Writes loop_scorecard.{png,svg} and permutation_null.{png,svg}.
 """
 import os
@@ -61,23 +61,27 @@ def scorecard(summ):
     order = [b for b in BENCH_ORDER if b in benches]
     n = len(order)
     fig = plt.figure(figsize=(3.6 * n, 7.2))
-    gs = gridspec.GridSpec(2, n, height_ratios=[1.35, 1], hspace=0.5, wspace=0.34,
+    gs = gridspec.GridSpec(2, n, height_ratios=[1.35, 1], hspace=0.5, wspace=0.75,
                            left=0.06, right=0.98, top=0.83, bottom=0.09)
 
-    # top row: per-benchmark candidate locked AUC vs baseline
+    # top row: every candidate's dev AUC (hollow); locked AUC (filled) only where the locked
+    # split was scored, i.e. the baseline and the dev-selected champion
     for j, bid in enumerate(order):
         b = benches[bid]
         ax = fig.add_subplot(gs[0, j])
-        cands = sorted(b["candidates"], key=lambda c: c["locked_auc"])
+        cands = sorted(b["candidates"], key=lambda c: c["dev_auc"])
         ys = np.arange(len(cands))
         for i, c in enumerate(cands):
             passed = c["passed"] and c["name"] != b["baseline"]
             col = C_PASS if passed else (C_BASE if c["name"] == b["baseline"] else C_FAIL)
-            lo, hi = c["locked_ci"]
-            ax.plot([lo, hi], [i, i], color=col, lw=2, alpha=0.35, solid_capstyle="round")
-            ax.scatter([c["locked_auc"]], [i], s=48, color=col, zorder=3,
-                       marker=("D" if c["name"] == b["baseline"] else "o"),
-                       edgecolor="white", linewidth=0.8)
+            ax.scatter([c["dev_auc"]], [i], s=40, facecolor="none", edgecolor=col,
+                       linewidth=1.2, zorder=2)
+            if c.get("locked_auc") is not None:
+                lo, hi = c["locked_ci"]
+                ax.plot([lo, hi], [i, i], color=col, lw=2, alpha=0.35, solid_capstyle="round")
+                ax.scatter([c["locked_auc"]], [i], s=48, color=col, zorder=3,
+                           marker=("D" if c["name"] == b["baseline"] else "o"),
+                           edgecolor="white", linewidth=0.8)
         ax.axvline(b["baseline_locked_auc"], color=C_BASE, ls="--", lw=1.2, alpha=0.8)
         ax.axvline(0.5, color="#e5e7eb", lw=1)
         ax.set_yticks(ys)
@@ -86,7 +90,7 @@ def scorecard(summ):
         ax.set_title(BENCH_TITLE[bid], fontsize=9.5, color=INK, pad=8)
         _style(ax)
         if j == 0:
-            ax.set_xlabel("held-out (locked) AUC", fontsize=8, color=MUTED)
+            ax.set_xlabel("AUC (hollow = dev, filled = locked)", fontsize=8, color=MUTED)
 
     # bottom: running-best certified locked AUC over the loop's iterations, per benchmark
     axp = fig.add_subplot(gs[1, :])
@@ -96,13 +100,14 @@ def scorecard(summ):
         xs, best = [], []
         cur = b["baseline_locked_auc"]
         for c in cands:
-            if c["passed"] and c["name"] != b["baseline"]:
+            if c["passed"] and c["name"] != b["baseline"] and c.get("locked_auc") is not None:
                 cur = max(cur, c["locked_auc"])
             xs.append(c["iteration"])
             best.append(cur)
         axp.plot(xs, best, marker="o", ms=5, lw=2, label=BENCH_TITLE[bid])
         axp.annotate(f"{best[-1]:.2f}", (xs[-1], best[-1]), textcoords="offset points",
                      xytext=(6, 0), fontsize=8, color=INK, va="center")
+    axp.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
     axp.set_xlabel("loop iteration (candidate tried, in order)", fontsize=8, color=MUTED)
     axp.set_ylabel("best certified\nlocked AUC", fontsize=8, color=MUTED)
     axp.set_title("Loop progress: best certified model so far", fontsize=9.5, color=INK, pad=6)
@@ -112,7 +117,8 @@ def scorecard(summ):
     fig.suptitle("Cardiac-safety loop scorecard  ·  " + summ.get("run_ts", ""),
                  fontsize=12, color=INK, x=0.07, ha="left", y=0.965, weight="bold")
     fig.text(0.07, 0.9, "diamond = baseline (amber dashed) · teal = certified (beats baseline "
-             "+ permutation null) · gray = not certified · bars = 95% bootstrap CI",
+             "+ permutation null) · gray = not certified · hollow = dev AUC · "
+             "filled = locked AUC, scored for baseline and champion only · bars = 95% CI",
              fontsize=8, color=MUTED, ha="left")
     for ext in ("png", "svg"):
         fig.savefig(os.path.join(HERE, f"loop_scorecard.{ext}"), dpi=150,
@@ -131,9 +137,9 @@ def null_figure(summ):
               "dictrank_fp": 200}
     for ax, bid in zip(axes, order):
         b = benches[bid]
-        # headline = highest-locked-AUC certified candidate, else the baseline
-        passed = [c for c in b["candidates"] if c["passed"]]
-        head = max(passed or b["candidates"], key=lambda c: c["locked_auc"])
+        # headline = the champion selected on dev, else the baseline. Never pick by locked AUC.
+        head_name = b.get("champion") or b["baseline"]
+        head = next(c for c in b["candidates"] if c["name"] == head_name)
         bench = BENCH_CLASS[bid]()
         registry, _ = M.REGISTRIES[bid]
         Xd, yd, gd, _ = bench.dev()

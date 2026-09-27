@@ -1,14 +1,16 @@
 {
-  "run_ts": "2026-07-20T00:26:28",
+  "run_ts": "2026-09-27T16:14:56",
   "benchmarks": {
     "cipa28_tdp": {
-      "run_ts": "2026-07-20T00:26:28",
+      "run_ts": "2026-09-27T16:14:56",
       "baseline": "herg_only_baseline",
       "baseline_locked_auc": 0.9375,
+      "champion": "kernik_only",
       "candidates": [
         {
           "name": "herg_only_baseline",
           "iteration": 0,
+          "role": "baseline",
           "dev_auc": 0.8438,
           "dev_ci": [
             0.4444,
@@ -34,16 +36,14 @@
         {
           "name": "multichannel_sum",
           "iteration": 1,
+          "role": "candidate",
           "dev_auc": 0.7812,
           "dev_ci": [
             0.3,
             1.0
           ],
-          "locked_auc": 0.875,
-          "locked_ci": [
-            0.6667,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.0849,
             "null_mean": 0.5108,
@@ -52,23 +52,21 @@
           },
           "gates": {
             "beats_null": false,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         },
         {
           "name": "multichannel_logreg",
           "iteration": 2,
+          "role": "candidate",
           "dev_auc": 0.5625,
           "dev_ci": [
             0.1143,
             1.0
           ],
-          "locked_auc": 0.9375,
-          "locked_ci": [
-            0.7842,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.2348,
             "null_mean": 0.3741,
@@ -77,13 +75,14 @@
           },
           "gates": {
             "beats_null": false,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         },
         {
           "name": "kernik_only",
           "iteration": 3,
+          "role": "champion",
           "dev_auc": 0.9062,
           "dev_ci": [
             0.6296,
@@ -109,16 +108,14 @@
         {
           "name": "multichannel_plus_kernik",
           "iteration": 4,
+          "role": "candidate",
           "dev_auc": 0.75,
           "dev_ci": [
             0.25,
             1.0
           ],
-          "locked_auc": 0.9375,
-          "locked_ci": [
-            0.7842,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.0909,
             "null_mean": 0.3832,
@@ -127,7 +124,7 @@
           },
           "gates": {
             "beats_null": false,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         }
@@ -145,13 +142,15 @@
       }
     },
     "enginev0_cardiotox": {
-      "run_ts": "2026-07-20T00:26:28",
+      "run_ts": "2026-09-27T16:14:56",
       "baseline": "magnitude_only",
       "baseline_locked_auc": 0.7,
+      "champion": "all_features",
       "candidates": [
         {
           "name": "magnitude_only",
           "iteration": 0,
+          "role": "baseline",
           "dev_auc": 0.876,
           "dev_ci": [
             0.7024,
@@ -177,16 +176,14 @@
         {
           "name": "panel_only",
           "iteration": 1,
+          "role": "candidate",
           "dev_auc": 0.6942,
           "dev_ci": [
             0.4464,
             0.9083
           ],
-          "locked_auc": 0.5333,
-          "locked_ci": [
-            0.0833,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.004,
             "null_mean": 0.3545,
@@ -195,23 +192,21 @@
           },
           "gates": {
             "beats_null": true,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         },
         {
           "name": "panel_no_magnitude",
           "iteration": 2,
+          "role": "candidate",
           "dev_auc": 0.9008,
           "dev_ci": [
             0.7521,
             1.0
           ],
-          "locked_auc": 0.6667,
-          "locked_ci": [
-            0.2,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.001,
             "null_mean": 0.3825,
@@ -220,13 +215,14 @@
           },
           "gates": {
             "beats_null": true,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         },
         {
           "name": "all_features",
           "iteration": 3,
+          "role": "champion",
           "dev_auc": 0.9752,
           "dev_ci": [
             0.9008,
@@ -263,13 +259,15 @@
       }
     },
     "variant_tdp": {
-      "run_ts": "2026-07-20T00:26:28",
+      "run_ts": "2026-09-27T16:14:56",
       "baseline": "healthy_only",
       "baseline_locked_auc": 0.9271,
+      "champion": "variant_conditioned",
       "candidates": [
         {
           "name": "healthy_only",
           "iteration": 0,
+          "role": "baseline",
           "dev_auc": 0.9062,
           "dev_ci": [
             0.6296,
@@ -295,6 +293,7 @@
         {
           "name": "variant_conditioned",
           "iteration": 1,
+          "role": "champion",
           "dev_auc": 0.8125,
           "dev_ci": [
             0.3438,
@@ -320,16 +319,14 @@
         {
           "name": "variant_deltas",
           "iteration": 2,
+          "role": "candidate",
           "dev_auc": 0.4062,
           "dev_ci": [
             0.0,
             0.9
           ],
-          "locked_auc": 0.5625,
-          "locked_ci": [
-            0.2,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.4216,
             "null_mean": 0.3571,
@@ -338,23 +335,21 @@
           },
           "gates": {
             "beats_null": false,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         },
         {
           "name": "lqt2_amplification",
           "iteration": 3,
+          "role": "candidate",
           "dev_auc": 0.6562,
           "dev_ci": [
             0.1875,
             1.0
           ],
-          "locked_auc": 0.6146,
-          "locked_ci": [
-            0.1333,
-            1.0
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.1019,
             "null_mean": 0.3041,
@@ -363,7 +358,7 @@
           },
           "gates": {
             "beats_null": false,
-            "beats_baseline": false
+            "beats_baseline": null
           },
           "passed": false
         }
@@ -381,13 +376,15 @@
       }
     },
     "dictrank_fp": {
-      "run_ts": "2026-07-20T00:26:28",
+      "run_ts": "2026-09-27T16:14:56",
       "baseline": "fp_bitcount_baseline",
       "baseline_locked_auc": 0.5412,
+      "champion": "fp_logreg_l2_0.3",
       "candidates": [
         {
           "name": "fp_bitcount_baseline",
           "iteration": 0,
+          "role": "baseline",
           "dev_auc": 0.4848,
           "dev_ci": [
             0.4383,
@@ -413,16 +410,14 @@
         {
           "name": "fp_logreg_l2_3.0",
           "iteration": 1,
+          "role": "candidate",
           "dev_auc": 0.7138,
           "dev_ci": [
             0.6714,
             0.7518
           ],
-          "locked_auc": 0.6669,
-          "locked_ci": [
-            0.5867,
-            0.7437
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.005,
             "null_mean": 0.497,
@@ -431,23 +426,21 @@
           },
           "gates": {
             "beats_null": true,
-            "beats_baseline": true
+            "beats_baseline": null
           },
-          "passed": true
+          "passed": false
         },
         {
           "name": "fp_logreg_l2_1.0",
           "iteration": 2,
+          "role": "candidate",
           "dev_auc": 0.7147,
           "dev_ci": [
             0.6722,
             0.753
           ],
-          "locked_auc": 0.6628,
-          "locked_ci": [
-            0.5828,
-            0.7387
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.005,
             "null_mean": 0.4972,
@@ -456,22 +449,23 @@
           },
           "gates": {
             "beats_null": true,
-            "beats_baseline": true
+            "beats_baseline": null
           },
-          "passed": true
+          "passed": false
         },
         {
           "name": "fp_logreg_l2_0.3",
           "iteration": 3,
+          "role": "champion",
           "dev_auc": 0.7148,
           "dev_ci": [
             0.6723,
             0.7529
           ],
-          "locked_auc": 0.6618,
+          "locked_auc": 0.6569,
           "locked_ci": [
-            0.5829,
-            0.7386
+            0.5776,
+            0.7331
           ],
           "permutation": {
             "pval": 0.005,
@@ -488,16 +482,14 @@
         {
           "name": "fp_logreg_l2_0.1",
           "iteration": 4,
+          "role": "candidate",
           "dev_auc": 0.7147,
           "dev_ci": [
             0.6721,
             0.753
           ],
-          "locked_auc": 0.6613,
-          "locked_ci": [
-            0.5817,
-            0.7384
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.005,
             "null_mean": 0.4973,
@@ -506,9 +498,9 @@
           },
           "gates": {
             "beats_null": true,
-            "beats_baseline": true
+            "beats_baseline": null
           },
-          "passed": true
+          "passed": false
         }
       ],
       "canary": {
@@ -524,13 +516,15 @@
       }
     },
     "dictrank_fp_random": {
-      "run_ts": "2026-07-20T00:26:28",
+      "run_ts": "2026-09-27T16:14:56",
       "baseline": "fp_bitcount_baseline",
       "baseline_locked_auc": 0.5044,
+      "champion": "fp_logreg_l2_3.0",
       "candidates": [
         {
           "name": "fp_bitcount_baseline",
           "iteration": 0,
+          "role": "baseline",
           "dev_auc": 0.4925,
           "dev_ci": [
             0.45,
@@ -556,20 +550,21 @@
         {
           "name": "fp_logreg_l2_3.0",
           "iteration": 1,
-          "dev_auc": 0.6883,
+          "role": "champion",
+          "dev_auc": 0.6855,
           "dev_ci": [
-            0.6452,
-            0.7289
+            0.6427,
+            0.7262
           ],
-          "locked_auc": 0.7448,
+          "locked_auc": 0.7435,
           "locked_ci": [
-            0.6733,
+            0.672,
             0.8158
           ],
           "permutation": {
             "pval": 0.005,
-            "null_mean": 0.4941,
-            "null_p95": 0.5474,
+            "null_mean": 0.4942,
+            "null_p95": 0.5464,
             "n": 200
           },
           "gates": {
@@ -581,66 +576,14 @@
         {
           "name": "fp_logreg_l2_1.0",
           "iteration": 2,
-          "dev_auc": 0.6866,
+          "role": "candidate",
+          "dev_auc": 0.6842,
           "dev_ci": [
-            0.6435,
-            0.7273
+            0.6409,
+            0.7248
           ],
-          "locked_auc": 0.7445,
-          "locked_ci": [
-            0.6716,
-            0.8163
-          ],
-          "permutation": {
-            "pval": 0.005,
-            "null_mean": 0.4944,
-            "null_p95": 0.5458,
-            "n": 200
-          },
-          "gates": {
-            "beats_null": true,
-            "beats_baseline": true
-          },
-          "passed": true
-        },
-        {
-          "name": "fp_logreg_l2_0.3",
-          "iteration": 3,
-          "dev_auc": 0.6861,
-          "dev_ci": [
-            0.6425,
-            0.7272
-          ],
-          "locked_auc": 0.7431,
-          "locked_ci": [
-            0.67,
-            0.815
-          ],
-          "permutation": {
-            "pval": 0.005,
-            "null_mean": 0.4945,
-            "null_p95": 0.5451,
-            "n": 200
-          },
-          "gates": {
-            "beats_null": true,
-            "beats_baseline": true
-          },
-          "passed": true
-        },
-        {
-          "name": "fp_logreg_l2_0.1",
-          "iteration": 4,
-          "dev_auc": 0.6859,
-          "dev_ci": [
-            0.6422,
-            0.7267
-          ],
-          "locked_auc": 0.7427,
-          "locked_ci": [
-            0.6699,
-            0.8148
-          ],
+          "locked_auc": null,
+          "locked_ci": null,
           "permutation": {
             "pval": 0.005,
             "null_mean": 0.4945,
@@ -649,9 +592,55 @@
           },
           "gates": {
             "beats_null": true,
-            "beats_baseline": true
+            "beats_baseline": null
           },
-          "passed": true
+          "passed": false
+        },
+        {
+          "name": "fp_logreg_l2_0.3",
+          "iteration": 3,
+          "role": "candidate",
+          "dev_auc": 0.6837,
+          "dev_ci": [
+            0.6404,
+            0.7247
+          ],
+          "locked_auc": null,
+          "locked_ci": null,
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4945,
+            "null_p95": 0.5448,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": null
+          },
+          "passed": false
+        },
+        {
+          "name": "fp_logreg_l2_0.1",
+          "iteration": 4,
+          "role": "candidate",
+          "dev_auc": 0.6836,
+          "dev_ci": [
+            0.6402,
+            0.7247
+          ],
+          "locked_auc": null,
+          "locked_ci": null,
+          "permutation": {
+            "pval": 0.005,
+            "null_mean": 0.4946,
+            "null_p95": 0.5447,
+            "n": 200
+          },
+          "gates": {
+            "beats_null": true,
+            "beats_baseline": null
+          },
+          "passed": false
         }
       ],
       "canary": {

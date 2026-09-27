@@ -7,7 +7,7 @@ Mirrors the leakage-proof discipline of eval_core.py (permutation_null): define 
 observed replication statistic, build an empirical null by shuffling gene identity /
 labels, and report where the observed value sits in the null tail.
 
-The panel-selection recipe (RICHER_PANEL_ANALYSIS.md, T-048) that this test interrogates:
+The panel-selection recipe that this test interrogates:
   per-gene per-dataset logFC -> z-score within each dataset -> Stouffer Z = sum(z)/sqrt(n)
   -> panel = genes directionally consistent in >=3/4 datasets AND Bonferroni p<5e-7.
 Selection therefore GUARANTEES >=3/4 sign agreement with the panel direction for every
@@ -21,13 +21,13 @@ Three tests, in increasing leakage-robustness:
      from the other three, test whether the held-out dataset agrees, vs a shuffle null of
      the held-out signs. The direction tested against is held-out-independent, so this
      mostly escapes the selection floor. Residual leak: panel membership still used the
-     held-out dataset, stated in the writeup.
+     held-out dataset, as stated in the original analysis.
   C. Disease-variant enrichment (GSE198258) recomputed from primary DEG, Fisher exact,
      plus a label-shuffle null (random equal-size gene sets from the measured background).
 
 numpy + scipy + csv only. Deterministic given SEED.
 
-Run:  ~/.venvs/myokit/bin/python panel_replication_run.py
+Run:  ENGINE_V0_DIR=<data checkout> python panel_replication_run.py
 """
 import os
 import csv

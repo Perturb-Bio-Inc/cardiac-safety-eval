@@ -13,3 +13,4 @@ __pycache__/
 *.pfx
 credentials*.json
 *service-account*.json
+*.png

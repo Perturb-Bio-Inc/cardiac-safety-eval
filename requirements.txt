@@ -1,0 +1,5 @@
+# Tested 2026-09-27 with Python 3.12
+numpy==2.5.3
+scipy==1.18.1
+rdkit==2026.3.6
+matplotlib==3.11.2

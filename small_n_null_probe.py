@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Synthetic probe for the sub-0.5 permutation null (T-511).
+Synthetic probe for the sub-0.5 permutation null.
 
 The README caveat asserts the small-benchmark permutation null "centers slightly below 0.50
 (an overfitting-under-shuffle effect, not leakage)". This script tests that assertion by
@@ -15,7 +15,7 @@ Four probes:
   C. group-count sweep at fixed n                                -> how does it scale with folds?
   D. within-fold vs between-fold AUC decomposition               -> where does the shift live?
 
-Run: ~/.venvs/myokit/bin/python small_n_null_probe.py
+Run: python small_n_null_probe.py
 Writes small_n_null_probe.json next to this file. Does not touch eval_core.py.
 """
 import json

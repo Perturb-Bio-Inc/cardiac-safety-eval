@@ -94,7 +94,7 @@ CIPA_REGISTRY = {
 
 # --- engine-v0 (cols: 0 panel_score, 1 log_n_de, 2 n_up, 3 n_down). Baseline = pure magnitude:
 # a candidate must beat log_n_de alone to claim real cardiac signal rather than a magnitude
-# artifact. This is the exact question the engine-v0 writeup left open. ---
+# artifact. This is the question the original engine-v0 analysis left open. ---
 ENGINEV0_REGISTRY = {
     "magnitude_only":       _logreg_scorer([1], pos=1),           # the confound / baseline
     "panel_only":           _logreg_scorer([0], pos=1),           # the claimed cardiac signal

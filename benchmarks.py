@@ -26,10 +26,11 @@ import gzip
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REF = os.path.join(HERE, "..", "cipa_validation", "cipa_28drug_reference.csv")
-KERNIK = os.path.join(HERE, "..", "cipa_validation", "cipa_validation_results.csv")
+DATA = os.environ.get("CSE_DATA_DIR", os.path.join(HERE, "data"))
+REF = os.path.join(DATA, "cipa_28drug_reference.csv")
+KERNIK = os.path.join(DATA, "cipa_validation_results.csv")
 GROUPS_CSV = os.path.join(HERE, "cipa_mechanism_groups.csv")
-DICTRANK = os.path.join(HERE, "..", "..", "..", "engine-v0", "data", "dictrank_figshare_v1.csv.gz")
+DICTRANK = os.path.join(DATA, "DICTrank_binarised.csv.gz")
 
 CLS_IDX = {"Low": 0, "Interm": 1, "Intermediate": 1, "High": 2}
 SENTINEL = -4.0   # log10(Cmax/IC50) when a channel has no measured block (IC50 ~1e4 x Cmax)
@@ -57,7 +58,7 @@ def _load_mechanism_groups():
 
 
 def _load_kernik_risk():
-    """Precomputed Kernik-2019 iPSC-CM AP risk per drug from the T-151 harness output.
+    """Precomputed Kernik-2019 iPSC-CM AP risk per drug from cipa_validation_harness.py (cipa-validation repository).
     Reused as a feature so the mechanistic model plugs through the same firewall without a
     Myokit re-run. Missing file -> {} and the kernik feature falls back to sentinel."""
     if not os.path.exists(KERNIK):
@@ -119,12 +120,12 @@ class CiPABenchmark:
 # --------------------------------------------------------------------------------------
 # EngineV0Benchmark: retro-validate the prior cardiotox classifier through the firewall
 # --------------------------------------------------------------------------------------
-ENGINE = os.path.join(HERE, "..", "..", "..", "engine-v0", "data", "cmrd_classifier_results.csv")
+ENGINE = os.path.join(DATA, "enginev0_classifier_results.csv")
 
 
 class EngineV0Benchmark:
     """The engine-v0 iPSC-CM cardiotox classifier features + label, run through the same
-    firewall + permutation null that its own writeup lacked. The README's finding is that the
+    firewall + permutation null that the original analysis lacked. That analysis found that the
     panel signal is largely a transcriptional-magnitude (log_n_de) artifact that does not
     generalize across mechanism classes. This benchmark lets the null adjudicate: does
     panel_score clear chance independent of magnitude?
@@ -183,7 +184,7 @@ class EngineV0Benchmark:
 # --------------------------------------------------------------------------------------
 # VariantBenchmark: the variant-conditioning test. Does variant-conditioning beat a healthy-cell model?
 # --------------------------------------------------------------------------------------
-VARIANT = os.path.join(HERE, "..", "cipa_validation", "variant_susceptibility_results.csv")
+VARIANT = os.path.join(DATA, "variant_susceptibility_results.csv")
 _VBG = ["healthy", "LQT2_mild", "LQT2_mod", "LQT1"]
 
 
@@ -245,7 +246,7 @@ class VariantBenchmark:
 # --------------------------------------------------------------------------------------
 # DICTrankBenchmark: the scale-up. 900+ FDA drugs, Morgan fingerprints, scaffold-split.
 # --------------------------------------------------------------------------------------
-DICTRANK_FULL = DICTRANK   # dictrank_figshare_v1.csv.gz (has Standardized_SMILES)
+DICTRANK_FULL = DICTRANK   # DICTrank_binarised.csv.gz (has Standardized_SMILES)
 
 
 class DICTrankBenchmark:

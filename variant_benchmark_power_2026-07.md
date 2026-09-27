@@ -24,8 +24,8 @@ answered it in the negative.
 | pos×neg pairs | 32 | 48 |
 | **AUC granularity (one pair reversal)** | **0.0312** | **0.0208** |
 
-`[Checked: ran VariantBenchmark().dev()/.locked() via ~/.venvs/myokit/bin/python 2026-07-20 →
-dev n=12 pos=4 neg=8, locked n=16 pos=4 neg=12; class counts [4,4,4] and [5,7,4]]`
+(Source: ran VariantBenchmark().dev()/.locked() via python 2026-07-20 →
+dev n=12 pos=4 neg=8, locked n=16 pos=4 neg=12; class counts [4,4,4] and [5,7,4])
 
 AUC here is a rank statistic over 48 (locked) or 32 (dev) pairs. It cannot take a value between
 multiples of 1/48. That single fact bounds everything below.
@@ -33,15 +33,15 @@ multiples of 1/48. That single fact bounds everything below.
 ## 1. Locked split (16 drugs)
 
 Observed: `healthy_only` 0.9271, `variant_conditioned` 0.9375, **delta +0.0104**
-`[Checked: recomputed both score vectors from models.VARIANT_REGISTRY, fit on dev, scored once
-on locked 2026-07-20 → 0.9271 / 0.9375, matching loop_summary.json]`.
+(Source: recomputed both score vectors from models.VARIANT_REGISTRY, fit on dev, scored once
+on locked 2026-07-20 → 0.9271 / 0.9375, matching loop_summary.json).
 
 +0.0104 is **half a pair reversal**. It is a tie being broken, not a drug being re-ranked.
 
 **Headroom.** The healthy baseline is already at 0.9271, so the maximum delta any model can
 show on this panel is **+0.0729** (perfect separation). Deltas of +0.10 or +0.15 are not
-merely undetected here, they are unconstructible `[Checked: computed 1 − 0.9271 on the locked
-score vector 2026-07-20 → 0.0729 ceiling; only 3.5 discordant pairs of 48 exist to fix]`.
+merely undetected here, they are unconstructible (Source: computed 1 − 0.9271 on the locked
+score vector 2026-07-20 → 0.0729 ceiling; only 3.5 discordant pairs of 48 exist to fix).
 
 **Paired bootstrap on the real score vectors** (20,000 drug resamples, both models scored on
 the identical resample, reusing `eval_core.bootstrap_ci`'s resampling scheme):
@@ -53,8 +53,8 @@ the identical resample, reusing `eval_core.bootstrap_ci`'s resampling scheme):
 | resamples with delta exactly 0 | 58.7% |
 | bootstrap correlation of the two AUCs | 0.972 |
 
-`[Checked: paired bootstrap n=20000, seed 0, on locked score vectors 2026-07-20 → SE 0.0173,
-CI [0.0000, 0.0597], 58.7% zero-delta, AUC corr 0.972]`
+(Source: paired bootstrap n=20000, seed 0, on locked score vectors 2026-07-20 → SE 0.0173,
+CI [0.0000, 0.0597], 58.7% zero-delta, AUC corr 0.972)
 
 Taken at face value that SE implies MDE₈₀ = 2.80 × 0.0173 = **0.0485**, which would sit just
 inside the 0.0729 ceiling. **That number is misleading and should not be quoted.** The SE is
@@ -74,8 +74,8 @@ and count how often the 95% CI excludes zero:
 | **+0.0729 (the ceiling)** | 3.5 | **0.039** |
 | observed +0.0104 | 0.5 | ~0.000 |
 
-`[Checked: simulation R=800 panels × B=400 paired bootstrap resamples, seed 1, on the real
-locked score vectors 2026-07-20 → power 0.005 / 0.018 / 0.039 / 0.000]`
+(Source: simulation R=800 panels × B=400 paired bootstrap resamples, seed 1, on the real
+locked score vectors 2026-07-20 → power 0.005 / 0.018 / 0.039 / 0.000)
 
 **A model that classified these drugs perfectly would have been called "no improvement" 96 times
 out of 100.**
@@ -86,10 +86,10 @@ The README leans on the dev drop as the reason to discount the nominal locked wi
 is weaker still.
 
 Observed: `healthy_only` 0.9062 (OOF, mechanism-grouped), `variant_conditioned` 0.8125,
-**delta −0.0938** `[Checked: grouped_oof_scores on dev, seed 0, 2026-07-20 → 0.9062 / 0.8125]`.
+**delta −0.0938** (Source: grouped_oof_scores on dev, seed 0, 2026-07-20 → 0.9062 / 0.8125).
 
 Paired bootstrap: SE 0.1072, 95% CI **[−0.3704, 0.0000]**, 0.0% of resamples positive, 37.4%
-exactly zero `[Checked: paired bootstrap n=20000, seed 0, dev OOF vectors 2026-07-20]`.
+exactly zero (Source: paired bootstrap n=20000, seed 0, dev OOF vectors 2026-07-20).
 
 Ceiling here is +0.0938 (3 discordant pairs of 32). Power under the same simulation:
 
@@ -100,7 +100,7 @@ Ceiling here is +0.0938 (3 discordant pairs of 32). Power under the same simulat
 | **+0.0938 (the ceiling)** | **0.020** |
 | observed −0.0938 | 0.024 |
 
-`[Checked: simulation R=800 × B=400, seed 1, dev OOF vectors 2026-07-20]`
+(Source: simulation R=800 × B=400, seed 1, dev OOF vectors 2026-07-20)
 
 Two things follow. First, the dev delta of −0.0938 is itself detected only 2.4% of the time,
 so the dev "drop" is as uninformative as the locked "win": its CI runs to −0.37 and touches
@@ -129,11 +129,11 @@ largest constructible delta (+0.0729):
 | 56 | 0.847 |
 | 64 | 0.922 |
 
-`[Checked: simulation R=600 × B=350, seed 5, locked score vectors, class balance preserved by
-resampling 2026-07-20 → 80% power crossed between n=48 and n=56, ≈52 drugs]`
+(Source: simulation R=600 × B=350, seed 5, locked score vectors, class balance preserved by
+resampling 2026-07-20 → 80% power crossed between n=48 and n=56, ≈52 drugs)
 
 Dev-balance equivalent at +0.0938: 0.557 at n=48, 0.782 at n=64, 0.927 at n=80, so ≈66 drugs
-`[Checked: same simulation, seed 5, dev OOF vectors 2026-07-20]`.
+(Source: same simulation, seed 5, dev OOF vectors 2026-07-20).
 
 So: **~52 drugs to detect a +0.073 gain, and ~110 drugs to detect the +0.05 threshold**, the
 latter by the (0.073/0.05)² = 2.13 variance scaling `[Not independently verified: extrapolation from the
@@ -155,7 +155,7 @@ model does not have and because it is the route to a labelled panel large enough
 
 ## Reproduce
 
-`~/.venvs/myokit/bin/python` with `PYTHONPATH=science/cardiac_safety_loop`. Score vectors come
+`python` from the repository root. Score vectors come
 from `models.VARIANT_REGISTRY` and `eval_core.grouped_oof_scores`; the paired bootstrap resamples
 drugs with replacement and scores both models on the identical resample. The power simulation
 draws panels from the observed score population and runs the same paired bootstrap inside each.

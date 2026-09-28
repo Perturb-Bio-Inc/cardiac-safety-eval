@@ -8,8 +8,8 @@ wins. Three checks do the work:
   1. HELD-OUT LOCKED SPLIT. Each benchmark splits into `dev` and `locked`. Candidates are
      fitted, compared and selected on `dev` only. The locked split is scored for three
      models: the pre-declared baseline, a random canary, and the one candidate selected on
-     dev. Any drug in the locked set is removed from dev by identity, so a model cannot see
-     a test drug under a different name.
+     dev. Each benchmark builds dev and locked as disjoint sets of rows. Near-duplicate
+     molecules can still fall on both sides of a random split.
 
   2. SHUFFLED-LABEL NULL. Shuffle the labels many times and run the whole pipeline (fit,
      out-of-fold score, metric) on each shuffle. That gives a null distribution. A real

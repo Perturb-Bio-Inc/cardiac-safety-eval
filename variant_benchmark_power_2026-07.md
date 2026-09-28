@@ -1,7 +1,7 @@
 # What delta could the variant × drug benchmark actually have detected?
 
 **Date:** 2026-07-20 · **Verdict: (b) the benchmark cannot tell.**
-Scope: the `variant_tdp` benchmark in an internal audit, the paired comparison
+Scope: the `variant_tdp` benchmark, the paired comparison
 `variant_conditioned` vs `healthy_only` on the same drugs, both splits.
 
 ## Answer in one paragraph
@@ -10,9 +10,7 @@ At its actual size the benchmark had **~4% power to detect the largest AUC gain 
 arithmetically possible on it** (locked split), and ~2% on dev. The observed locked delta of
 +0.0104 had essentially zero power. So "variant-conditioning does not beat the healthy-cell
 model" is not a negative result about variant conditioning; it is a statement that the test
-was silent. The wet-lab justification survives, but its logic changes: the wet data is
-needed **because the simulation cannot answer the question**, not because the simulation
-answered it in the negative.
+was silent.
 
 ## What the benchmark is
 
@@ -82,7 +80,7 @@ out of 100.**
 
 ## 2. Dev split (12 drugs)
 
-The README leans on the dev drop as the reason to discount the nominal locked win. The dev split
+An earlier README used the dev drop as the reason to discount the nominal locked win. The dev split
 is weaker still.
 
 Observed: `healthy_only` 0.9062 (OOF, mechanism-grouped), `variant_conditioned` 0.8125,
@@ -144,14 +142,12 @@ measured n=52 point, not simulated directly; a delta of exactly +0.05 is not con
 Both numbers are far outside CiPA-28. Answering this question in silico means a larger labelled
 TdP reference set, not a better model on this one.
 
-## 4. What this does to the wet-lab argument
+## 4. What this means for the variant question
 
-It does not weaken it. It re-bases it. The old sentence ("no clear advantage in EP simulation") reads
-as a measured negative and invites the obvious follow-up: if simulation says no, why would wet
-data say yes? The correct sentence is that EP simulation on the available reference panel is
-**silent** on the variant advantage, at any effect size that could exist on that panel. The wet
-wet multimodal data is what makes the question answerable, both because it measures modalities the AP
-model does not have and because it is the route to a labelled panel large enough to carry a test.
+"No clear advantage in EP simulation" reads as a measured negative. The accurate statement is
+that EP simulation on this reference panel is **silent** on the variant advantage, at any effect
+size that could exist on the panel. Answering the question takes a larger labelled panel, or
+measurements of modalities the action-potential model does not have.
 
 ## Reproduce
 

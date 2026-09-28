@@ -8,7 +8,13 @@
 > scores **0.695** (SD 0.032) on the scaffold split and 0.714 (SD 0.030) on the random split,
 > a paired difference of +0.0195 (SD 0.039), random higher in 6 of 8 seeds
 > (`dictrank_split_scheme.json`). The conclusion is unchanged: the split costs about 0.02
-> AUC, and the rest of the gap to 0.84 comes from the features and the test set.
+> AUC. That difference is not significant (paired t-test p = 0.20, sign test p = 0.29), and
+> the attribution of the remaining gap to features and test set below is an inference we have
+> not tested. `dictrank_split_scheme_2026-07-20.json` is the July run of the locked-selected
+> `fp_logreg_l2_3.0` and stays as a record; `dictrank_split_scheme.json` is current. "Best
+> published number" below means the highest we found: the Chem Res Toxicol 2025 paper reports
+> no AUC we could obtain. About 0.005 of the move from 0.6669 to 0.657 is package-version drift
+> rather than the selection fix (same code and data, `fp_logreg_l2_3.0` now scores 0.662).
 
 2026-07-20. Answers an open question on the DICTrank result: 0.67 was carried with no comparator, and the working assumption was that our scaffold-disjoint split explained the gap to published DICTrank models.
 

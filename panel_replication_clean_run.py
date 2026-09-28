@@ -58,11 +58,10 @@ SHARMA_CSV = f"{EV0}/data/sharma2017/GSE114686_ProcessedData.csv"
 DTOXS_META = f"{EV0}/data/dtoxs/dtoxs_drug_metadata.txt"
 
 # Full DToxS DEG TSV directory (all genes per drug x cell-line). Auto-detected.
-DTOXS_DEG_DIR_CANDIDATES = [
-    "/private/tmp/dtoxs_full_download/unzipped/LINCS_DToxS_SVD/Experimental_data/Degs_initial_iPSCdCMs_P0",
-    "/private/tmp/dtoxs_full_unzipped/LINCS_DToxS_SVD/Experimental_data/Degs_initial_iPSCdCMs_P0",
+DTOXS_DEG_DIR_CANDIDATES = [p for p in [
+    os.environ.get("DTOXS_DEG_DIR", ""),   # set to .../LINCS_DToxS_SVD/Experimental_data/Degs_initial_iPSCdCMs_P0
     "/tmp/dtoxs_full_unzipped/LINCS_DToxS_SVD/Experimental_data/Degs_initial_iPSCdCMs_P0",
-]
+] if p]
 
 BURRIDGE_DONORS = ["CON1", "CON3", "CON4", "CH1", "CH3", "CH4"]
 WULIU_TREAT = ["wtD_1", "wtD_2"]
@@ -192,9 +191,9 @@ def _read_deg_logfc(path):
     files: the header has one FEWER field than each data row, so the gene symbol
     is data column 0 (the unnamed row-name / index) and the named 'logFC' header
     at position h maps to data column h+1. This is exactly what pandas
-    read_csv(index_col=0, usecols=['logFC']) does in T048. Returns
+    read_csv(index_col=0, usecols=['logFC']) does in the original panel-selection script. Returns
     {GENE_UPPER: logFC}, first occurrence of a duplicate symbol kept
-    (matches T048 drop_duplicates keep='first')."""
+    (matches the original script's drop_duplicates keep='first')."""
     with open(path, encoding="latin-1") as f:
         rdr = csv.reader(f, delimiter="\t")
         hdr = next(rdr)
@@ -214,7 +213,7 @@ def _read_deg_logfc(path):
 
 def load_dtoxs_full():
     """Per-gene mean log2FC for cardiotox+ drugs from the FULL DToxS DEG TSVs.
-    Replicates T048.load_dtoxs_cardiotox_logfc exactly:
+    Replicates the original panel-selection script's DToxS loader exactly:
       per (drug, MSN): first replicate file wins (sorted order);
       per drug: mean across MSN cell lines (skip genes absent in an MSN);
       per gene: mean across cardiotox+ drugs (skip drugs absent for a gene)."""
@@ -256,7 +255,7 @@ def load_dtoxs_full():
 def zscore(d):
     genes = list(d.keys())
     v = np.array([d[g] for g in genes])
-    z = (v - v.mean()) / v.std(ddof=1)   # ddof=1 matches pandas .std() in T048
+    z = (v - v.mean()) / v.std(ddof=1)   # ddof=1 matches pandas .std() in the original script
     return dict(zip(genes, z))
 
 

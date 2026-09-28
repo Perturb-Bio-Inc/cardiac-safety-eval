@@ -170,8 +170,8 @@
       <div class="guard"><div class="g-n">03</div><h4>Baseline gate</h4>
         <p>A candidate passes only if its permutation p-value is below 0.05, its
           development AUC beats the null's 95th percentile, and its locked AUC beats the
-          baseline. A random-score canary runs alongside as a check, and it has failed in
-          every run so far.</p></div>
+          baseline. A random-score canary runs alongside each benchmark as a check on
+          the gate.</p></div>
     </div>
   </section>
 
@@ -190,11 +190,11 @@ const META = {
   cipa28_tdp:{title:"CiPA-28",sub:"FDA TdP-risk class · High vs rest",n:28,
     verdict:"Nothing beats hERG block alone. The candidate chosen on the development split, the Kernik action-potential model, scores 0.91 on the locked set against 0.94 for hERG alone."},
   enginev0_cardiotox:{title:"engine-v0",sub:"iPSC-CM cardiotox · transcriptomic features",n:33,
-    verdict:"The chosen model uses all four features and passes the gate, 0.80 against 0.70 for response magnitude alone. The locked set holds 11 drugs and the two confidence intervals overlap almost entirely. On the development split the panel alone scores 0.69, against 0.88 for magnitude alone."},
+    verdict:"No valid result. The panel features carry a label leak: the panel's gene directions came from the cardiotoxic DToxS drugs, including this benchmark's test drugs. Only the magnitude baseline (0.70) is label-free. Even with the leak, the panel alone scores below magnitude on the development split (0.69 against 0.88).",invalid:true},
   variant_tdp:{title:"Variant × drug",sub:"long-QT backgrounds · simulated",n:28,
-    verdict:"The variant-conditioned model passes the gate by one drug out of 16. The benchmark has 3.9% power to detect the largest possible gain, so it cannot settle the question."},
+    verdict:"The variant-conditioned model passes the gate by half of one drug pair out of 48, and scores below the baseline on the development split. The benchmark has 3.9% power to detect the largest possible gain, so it cannot settle the question."},
   dictrank_fp:{title:"DICTrank",sub:"structure → cardiotox · scaffold split",n:996,
-    verdict:"A structure-only model reaches 0.66 on 249 scaffold-disjoint locked drugs, against 0.54 for a bit-count baseline. The shuffled-label null centers at 0.50, and none of 200 shuffles matched the observed score. The best published result is 0.84, on a different test set with richer features."},
+    verdict:"A structure-only model reaches 0.66 on 249 scaffold-disjoint locked drugs, against 0.54 for a bit-count baseline. The shuffled-label null centers at 0.50, and none of 200 shuffles matched the observed score. The highest published result we found is 0.84, on a different test set with different features."},
 };
 const ORDER = ["cipa28_tdp","enginev0_cardiotox","variant_tdp","dictrank_fp"];
 const SERIES = ["#0d9488","#b45309","#be3455","#6366f1"]; // categorical for progress lines
@@ -209,7 +209,8 @@ function hideTip(){tip.style.opacity=0;}
 function fmt(x){return (x==null||isNaN(x))?"n/a":Number(x).toFixed(3);}
 
 // ---- stat tiles ----
-function statusOf(b){
+function statusOf(b,bid){
+  if(bid && META[bid].invalid) return {best:b.baseline_locked_auc,delta:0,cls:"neg",label:"label leak ·"};
   const gained = b.candidates.filter(c=>c.passed && c.name!==b.baseline);
   const best = gained.length? Math.max(...gained.map(c=>c.locked_auc)) : b.baseline_locked_auc;
   const delta = best - b.baseline_locked_auc;
@@ -220,7 +221,7 @@ function statusOf(b){
 function tiles(){
   const el=document.getElementById("tiles");
   ORDER.forEach(bid=>{
-    const b=DATA.benchmarks[bid], m=META[bid], s=statusOf(b);
+    const b=DATA.benchmarks[bid], m=META[bid], s=statusOf(b,bid);
     const d=document.createElement("div"); d.className="tile";
     d.innerHTML=`<div class="t-name">${m.title}</div>
       <div class="t-auc">${s.best.toFixed(2)}</div>

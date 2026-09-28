@@ -14,11 +14,9 @@ CiPABenchmark
     Ca-blocker, Na/INaL-blocker); the assignment file is tagged as curated.
 
 DICTrank cross-check (external, independent label source)
-  - 1000+ FDA drugs ranked for drug-induced cardiotoxicity. Used NOT as a trained target
-    here (that needs a SMILES featurizer, gated on chemistry libs) but as a second, wholly
-    independent label set: does a candidate's risk score rank-agree with DICTrank concern on
-    the drugs that overlap CiPA? Two independent gold standards agreeing is strong evidence a
-    score is real rather than fit to one label's quirks.
+  - About 1,000 FDA drugs ranked for drug-induced cardiotoxicity. Used two ways: as a
+    trained target (DICTrankBenchmark, Morgan fingerprints from featurize.py), and as an
+    independent label check on the drugs that overlap CiPA (dictrank_crosscheck).
 """
 import os
 import csv
@@ -130,8 +128,12 @@ class EngineV0Benchmark:
     generalize across mechanism classes. This benchmark lets the null adjudicate: does
     panel_score clear chance independent of magnitude?
 
+    LABEL LEAK: the panel's gene directions were set from the mean response of the DToxS drugs
+    labelled cardiotoxic, which include this benchmark's dev and locked positives. Every
+    feature except log_n_de therefore carries label information. See README.
+
     33 drugs (Yes/No only; the 21 ND compounds are dropped). No SMILES coverage here, so CV is
-    leave-one-drug-out (each drug its own group) and the permutation null is the primary guard.
+    5-fold over drugs (each drug its own group) and the permutation null is the primary guard.
     Features: panel_score, log_n_de, n_up_panel, n_down_panel."""
     id = "enginev0_cardiotox"
     feature_names = ("panel_score", "log_n_de", "n_up_panel", "n_down_panel")
@@ -207,8 +209,8 @@ class VariantBenchmark:
     CiPA drug in disease-variant (long-QT) backgrounds add TdP-classification power a healthy-
     cell model does not have? Features = repolarization risk in {healthy, LQT2-mild, LQT2-mod,
     LQT1}; label = CiPA TdP class; baseline = healthy background alone. If variant-conditioning
-    does not beat healthy on held-out drugs HERE, the variant-conditioning claim needs the real multimodal variant
-    wet multimodal data, not EP simulation, and this says so honestly. Reuses the CiPA 12/16 split and
+    does not beat healthy on held-out drugs here, simulation alone cannot support the
+    variant-conditioning claim. Reuses the CiPA 12/16 split and
     mechanism groups. Risks are precomputed by variant_susceptibility.py (no Myokit re-run)."""
     id = "variant_tdp"
     feature_names = ("risk_healthy", "risk_LQT2_mild", "risk_LQT2_mod", "risk_LQT1")
@@ -357,8 +359,8 @@ def dictrank_crosscheck(drug_names, scores):
     IMPORTANT: on the CiPA-28 overlap this is degenerate. CiPA drugs are selected for TdP
     relevance, so the matched set is ~12 positive / 1 negative and the AUC is meaningless
     (a single negative). Guarded to report `uninformative` rather than a misleading number.
-    The real use of DICTrank is as the scale-up benchmark (1000+ drugs, both classes well
-    populated), which needs a SMILES featurizer and is the documented next step."""
+    The real use of DICTrank is as a trained benchmark with both classes well populated;
+    see DICTrankBenchmark."""
     labels = load_dictrank_labels()
     matched = [(s, labels[d.lower()]) for d, s in zip(drug_names, scores)
                if d.lower() in labels]
